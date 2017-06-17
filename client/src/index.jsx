@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
+import SendRequest from './services/SendRequest.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -10,12 +11,13 @@ class App extends React.Component {
     this.state = { 
       repos: []
     }
-
+    
   }
 
   search (term) {
     console.log(`${term} was searched`);
     // TODO
+    SendRequest(term);
   }
 
   render () {
