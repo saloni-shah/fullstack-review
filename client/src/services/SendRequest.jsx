@@ -1,20 +1,35 @@
 import $ from 'jquery';
-var SendRequest = (term) => {
+var SendPostRepos = (term,cb) => {
   $.ajax({
     url: 'http://localhost:1128/repos/import',
     type: 'POST',
     contentType: "application/json",
-    dataType: "json",
     data: JSON.stringify({username: term}),
-    success: function(data) {
-      console.log('sent request with serach value..');
+    success: function() {
+      console.log('sent request with serach value and inserted data in db..');
+      cb();
     },
-    error: function (data) {
-      console.error('errorrrrr');
+    error: function (error) {
+      console.error(error);
     }
   });
 }
-module.exports = SendRequest;
+
+var SendRequestRepos = (callback) => {
+  $.ajax({
+    url: 'http://localhost:1128/repos',
+    type: 'GET',
+    dataType: "json",
+    success: function(data) {
+      callback(data);
+    },
+    error: function (data) {
+      console.error('errorrrrr2');
+    }
+  });
+}
+module.exports.SendPostRepos = SendPostRepos;
+module.exports.SendRequestRepos = SendRequestRepos;
 
 
 

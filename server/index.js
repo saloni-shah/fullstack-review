@@ -6,35 +6,34 @@ var Repo = require('../database');
 
 var app = express();
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
 app.use(express.static(__dirname + '/../client/dist'));
 
 app.post('/repos/import', function (req, res) {
-  // TODO
-  console.log('aaaabbbbbbbbb');
   var data = '';
   req.on('data',function(chunk){
     data += chunk;
   });
   req.on('end',function() {
     data = JSON.parse(data);
-    console.log(data.username);
     helpers.fetchGithubRepos(data, function(error,repos){
-      if (error) throw err; 
-      //console.log(repos[1]);
-      repos.forEach((val,index,arr) => {
-        Repo.create({ username: val.owner.login, avatar: val.owner.avatar_url, reponame: val.name, repourl: val.html_url, forkurl: val.forks_url}, function(error, doc) {
-          if (error) throw err;
-          console.log("data inserted into db successfully");
-        });
+      if (error) throw error; 
+      helpers.insertIntoDB(repos, function(error,message){
+        if (error) throw error; 
+        res.end();
       });
     });
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    res.end();
   });
 });
 
 app.get('/repos', function (req, res) {
-  // TODO
+  Repo.find().limit(5).sort({_id: -1}).exec(function(err,records){
+    if (err) throw err; 
+    res.send(records);
+  });
 });
 
 var port = 1128;

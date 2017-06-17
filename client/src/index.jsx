@@ -11,13 +11,21 @@ class App extends React.Component {
     this.state = { 
       repos: []
     }
-    
   }
 
   search (term) {
     console.log(`${term} was searched`);
-    // TODO
-    SendRequest(term);
+    SendRequest.SendPostRepos(term, this.componentDidMount.bind(this));
+  }
+  
+  componentDidMount(){
+    SendRequest.SendRequestRepos(this.getRepos.bind(this));
+  }
+  
+  getRepos(repos){
+    this.setState({ 
+      repos: repos
+    });
   }
 
   render () {

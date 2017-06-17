@@ -6,6 +6,7 @@ var repoSchema = mongoose.Schema({
   username: String,
   avatar: String,
   reponame: String,
+  repoid: Number,
   repourl: String,
   forkurl: String
 });

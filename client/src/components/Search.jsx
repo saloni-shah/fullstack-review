@@ -6,7 +6,6 @@ class Search extends React.Component {
     this.state = {
       term: ''
     }
-    
   }
 
   onChange (e) {
